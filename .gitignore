@@ -12,3 +12,6 @@ __pycache__/
 
 # reports/ is tracked -- it holds the committed validation evidence.
 # The sample product is deterministic, so the report is machine-independent.
+
+# smallbaselineApp work directories (large HDF5 outputs, machine-local)
+sbapp_*/

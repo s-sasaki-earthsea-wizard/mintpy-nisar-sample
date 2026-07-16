@@ -1,0 +1,21 @@
+# vim: set filetype=cfg:
+##---------------- NISAR L2 GUNW beta v1 — track 159 A frame 022 (central Spain) --------------##
+## Real mission data (beta, pre-calibration), 7 sequential 12-day pairs / 8 dates,
+## 2025-10-28 .. 2026-01-20, HH, EPSG 32630, 4392 x 4455 @ 80 m posting.
+## Data + DEM: run ../download_spain_stack.sh first.
+## Run from a sibling work directory, e.g.:
+##   mkdir -p sbapp_spain && cd sbapp_spain
+##   smallbaselineApp.py ../templates/NisarSpain159A022.txt
+
+mintpy.compute.cluster      = none
+
+##---------- load data
+mintpy.load.processor       = nisar
+mintpy.load.unwFile         = ../data/spain_159A022/*.h5
+mintpy.load.demFile         = ../data/dem_spain/dem_spain.tif
+
+##---------- corrections
+## beta products are not calibrated; keep external tropo off for this E2E plumbing run
+mintpy.troposphericDelay.method = no
+## exercise the GUNW-native ionosphere stack (ionStack.h5) consumption path
+mintpy.ionosphericDelay.method  = split_spectrum
