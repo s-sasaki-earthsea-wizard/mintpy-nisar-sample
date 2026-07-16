@@ -21,7 +21,7 @@ from mintpy import prep_nisar
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(HERE, "data")
-LOG_DIR = os.path.join(HERE, "logs")
+REPORT_DIR = os.path.join(HERE, "reports")
 
 # The synthetic fixtures assume these radarGrid datasets exist in a real GUNW.
 EXPECTED_RADARGRID = "science/LSAR/GUNW/metadata/radarGrid"
@@ -45,7 +45,7 @@ def list_radargrid(gunw):
 
 
 def main():
-    os.makedirs(LOG_DIR, exist_ok=True)
+    os.makedirs(REPORT_DIR, exist_ok=True)
     gunw = find_gunw()
 
     lines = []
@@ -98,7 +98,7 @@ def main():
     lines.append(f"\n- bounds: {bounds}")
 
     report = "\n".join(lines) + "\n"
-    out = os.path.join(LOG_DIR, "validation.md")
+    out = os.path.join(REPORT_DIR, "validation.md")
     with open(out, "w") as fh:
         fh.write(report)
 

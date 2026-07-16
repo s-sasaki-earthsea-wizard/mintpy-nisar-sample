@@ -3,9 +3,9 @@ data/
 *.h5
 *.h5.part
 
-# Validation logs (machine-dependent output)
-logs/
-
 # Python
 __pycache__/
 *.pyc
+
+# reports/ is tracked -- it holds the committed validation evidence.
+# The sample product is deterministic, so the report is machine-independent.

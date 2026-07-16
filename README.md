@@ -48,6 +48,7 @@ environment, e.g.:
 
 - `download_gunw.sh` — fetch the sample product (idempotent; skips if present).
 - `run_validation.py` — run `prep_nisar` readers against the real file and
-  emit `logs/validation_<date>.md`.
+  emit `reports/validation.md`.
 - `data/` — downloaded `.h5` products (untracked).
-- `logs/` — validation logs (untracked).
+- `reports/validation.md` — committed validation evidence (tracked; the sample
+  product is deterministic so the report is machine-independent).
