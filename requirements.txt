@@ -1,0 +1,15 @@
+# Real-data validation environment for mintpy.prep_nisar.
+#
+# numpy is pinned to the 1.x series on purpose. The system GDAL Python
+# bindings (osgeo) are compiled against NumPy 1.x; running them under a
+# NumPy 2.x interpreter triggers an "_ARRAY_API not found" ABI warning and
+# a stderr traceback on `import osgeo.gdal`. Pinning numpy<2 here keeps the
+# validation run clean, and keeps this env fully separate from the fork's
+# GPU venv (which needs numpy>=2 for the CUDA torch build).
+numpy<2
+
+# Direct runtime dependencies of the GDAL-free prep_nisar parsing layer.
+# (mintpy itself is installed editable from the parent fork; see README.)
+h5py
+pyproj
+scipy

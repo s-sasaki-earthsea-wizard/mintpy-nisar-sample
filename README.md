@@ -32,23 +32,38 @@ PR.
 
 ## Usage
 
-```bash
-./download_gunw.sh              # fetch the ~252 MB sample into ./data/
-python run_validation.py        # run prep_nisar readers, write validation log
-```
-
-`run_validation.py` needs a MintPy install with GDAL. Point it at the fork's
-environment, e.g.:
+This project uses its **own** isolated virtualenv (`.venv/`), separate from
+the fork's GPU venv. numpy is pinned to the 1.x series in `requirements.txt`
+so the system GDAL Python bindings (compiled against NumPy 1.x) import
+without the NumPy 2.x `_ARRAY_API` ABI warning. Set it up once:
 
 ```bash
-/path/to/MintPy/.venv/bin/python run_validation.py
+# 1. isolated env + the parent MintPy fork (editable), resolved with numpy<2
+uv venv --python 3.12 .venv
+uv pip install -r requirements.txt -e ..
+
+# 2. expose the system GDAL Python bindings (pip GDAL can't build here);
+#    Debian/Ubuntu ships them under the system interpreter.
+ln -sfn "$(python3 -c 'import osgeo, os; print(os.path.dirname(osgeo.__file__))')" \
+    .venv/lib/python3.12/site-packages/osgeo
 ```
+
+Then run the validation:
+
+```bash
+./download_gunw.sh                 # fetch the ~252 MB sample into ./data/
+.venv/bin/python run_validation.py # run prep_nisar readers, write the log
+```
+
+A clean run prints nothing on stderr and writes `reports/validation.md`.
 
 ## Layout
 
+- `requirements.txt` — PyPI deps for the isolated `.venv` (numpy pinned <2).
 - `download_gunw.sh` — fetch the sample product (idempotent; skips if present).
 - `run_validation.py` — run `prep_nisar` readers against the real file and
   emit `reports/validation.md`.
 - `data/` — downloaded `.h5` products (untracked).
+- `.venv/` — isolated validation env (untracked; recreate from the steps above).
 - `reports/validation.md` — committed validation evidence (tracked; the sample
   product is deterministic so the report is machine-independent).
